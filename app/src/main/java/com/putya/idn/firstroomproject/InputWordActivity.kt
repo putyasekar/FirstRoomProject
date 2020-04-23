@@ -29,7 +29,7 @@ class InputWordActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(inputWordText.text)) {
                 setResult(Activity.RESULT_CANCELED, moveData)
             } else {
-                val word = inputWordText.toString()
+                val word = inputWordText.text.toString()
                 moveData.putExtra(
                     EXTRA_REPLAY,
                     word
