@@ -32,7 +32,7 @@ abstract class WordRoomDB : RoomDatabase() {
     }
 
     private class WordDBCallBack(private val scope: CoroutineScope) :
-        RoomDatabase.Callback() { //coroutine - dagger - default courotine
+        RoomDatabase.Callback() { //coroutine - dagger - default couroutine
         override fun onOpen(db: SupportSQLiteDatabase) {
             super.onOpen(db)
             INSTANCE?.let { database ->
@@ -43,13 +43,14 @@ abstract class WordRoomDB : RoomDatabase() {
         }
 
         private fun accessDatabase(wordDao: WordDAO) {
+
+            wordDao.deleteAll()
+
             var word = Word("Hi Putya Have a Nice Day!")
             wordDao.insert(word)
 
             word = Word("Halo Putya!")
             wordDao.insert(word)
-
-            wordDao.deleteAll()
         }
     }
 }
