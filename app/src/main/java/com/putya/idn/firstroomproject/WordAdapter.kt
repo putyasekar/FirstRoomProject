@@ -1,16 +1,15 @@
 package com.putya.idn.firstroomproject
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.putya.idn.firstroomproject.databinding.ItemRowBinding
 
-class WordAdapter internal constructor(context: Context) :
-    RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
+class WordAdapter : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private lateinit var binding: ItemRowBinding
+
     private var word = emptyList<Word>()
 
     internal fun setWord(words: List<Word>) {
@@ -18,19 +17,28 @@ class WordAdapter internal constructor(context: Context) :
         notifyDataSetChanged()
     }
 
-    inner class WordViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val wordView: TextView = view.findViewById(R.id.tv_word)
+    inner class WordViewHolder(val binding: ItemRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Word) {
+            with(binding) {
+                tvWord.text = item.word
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordAdapter.WordViewHolder {
-        val itemView = inflater.inflate(R.layout.item_row, parent, false)
-        return WordViewHolder(itemView)
+
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_row,
+            parent,
+            false
+        )
+        return WordViewHolder(binding)
     }
 
     override fun getItemCount() = word.size
 
-    override fun onBindViewHolder(holder: WordAdapter.WordViewHolder, position: Int) {
-        val currentPosition = word[position]
-        holder.wordView.text = currentPosition.word
-    }
+    override fun onBindViewHolder(holder: WordAdapter.WordViewHolder, position: Int) =
+        holder.bind(word[position])
 }
