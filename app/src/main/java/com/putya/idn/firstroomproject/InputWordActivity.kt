@@ -5,9 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.widget.Button
 import android.widget.EditText
-import kotlinx.android.synthetic.main.activity_input_word.*
+import androidx.databinding.DataBindingUtil
+import com.putya.idn.firstroomproject.databinding.ActivityInputWordBinding
 
 class InputWordActivity : AppCompatActivity() {
     private lateinit var inputWordText: EditText
@@ -18,22 +18,21 @@ class InputWordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_input_word)
+        @Suppress("UNUSED_VARIABLE")
+        val binding = DataBindingUtil.setContentView<ActivityInputWordBinding>(
+            this,
+            R.layout.activity_input_word
+        )
+        inputWordText = binding.etInput
 
-        inputWordText = findViewById(R.id.et_input)
-
-        val button = findViewById<Button>(R.id.btn_save)
-        btn_save.setOnClickListener {
+        val button = binding.btnSave
+        button.setOnClickListener {
             val moveData = Intent()
-
             if (TextUtils.isEmpty(inputWordText.text)) {
                 setResult(Activity.RESULT_CANCELED, moveData)
             } else {
                 val word = inputWordText.text.toString()
-                moveData.putExtra(
-                    EXTRA_REPLAY,
-                    word
-                ) //dibuat disini dulu, biarin merah nanti dipanggil di companion object EXTRA_REPLAY
+                moveData.putExtra(EXTRA_REPLAY, word)
                 setResult(Activity.RESULT_OK, moveData)
             }
             finish()
